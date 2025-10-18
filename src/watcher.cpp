@@ -31,6 +31,11 @@ QString BatteryWatcher::readStatus() const{
     return in.readLine().trimmed();
 }
 
+void BatteryWatcher::notify(const QString &title, const QString &body) {
+    // QSystemTrayIcon::showMessage を使う（libnotify と統合される）
+    m_tray->showMessage(title, body, QSystemTrayIcon::Information, 10 * 1000);
+}
+
 void BatteryWatcher::checkOnce(){
     int cap = readCapacity();
     if(cap < 0) return;
@@ -44,10 +49,10 @@ void BatteryWatcher::checkOnce(){
             m_lastLowNotify = now;
         }
     }
-    if(cap <= m_highThreshold && status != "Charging"){
+    if(cap >= m_highThreshold && status == "Charging"){
         if(now - m_lastHighNotify > m_notifyCooldownMs){
             notify("Battery high", QString("Remaining amount %1% - Please unplug the charging code. ").arg(cap));
-            m_kastHighNotify = now;
+            m_lastHighNotify = now;
         }
     }
 }

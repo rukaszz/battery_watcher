@@ -16,6 +16,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Gui：ウィンドウシステムとかのやつ
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
 
+# Qt の自動処理を有効にする
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 # 実行ファイルの定義と列挙
 add_executable(battery_watcher
     src/main.cpp
