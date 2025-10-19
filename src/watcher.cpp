@@ -1,8 +1,11 @@
 #include "watcher.h"
+#include "toast.h"
+#include "notifyutil.h"
 #include <QFile>
 #include <QString>
 #include <QDateTime>
 #include <QTextStream>
+#include <QSystemTrayIcon>
 
 BatteryWatcher::BatteryWatcher(QSystemTrayIcon *tray, QObject *parent) : QObject(parent), m_tray(tray){
     m_timer.setInterval(60 * 1000); // 60秒ごと
@@ -44,15 +47,27 @@ void BatteryWatcher::checkOnce(){
     qint64 now = QDateTime::currentMSecsSinceEpoch();
 
     if(cap <= m_lowThreshold && status != "Charging"){
-        if(now - m_lastLowNotify > m_notifyCooldownMs){
-            notify("Battery low", QString("Remaining amount %1% - Please insert the charging code. ").arg(cap));
-            m_lastLowNotify = now;
+        QString battery_low = QString("Remaining amout %1% - Please insert the charging code").arg(cap);
+        showSystemNotification(m_tray, "Battery low", battery_low);
+
+        Toast *t = new Toast(battery_low);
+        t->showAtTopCenter();
+
+        int res = showBlockingDialog(nullptr, "Battery low", "Would you like to charge it? ");
+        if(res == 1){
+            //snooze
         }
     }
     if(cap >= m_highThreshold && status == "Charging"){
-        if(now - m_lastHighNotify > m_notifyCooldownMs){
-            notify("Battery high", QString("Remaining amount %1% - Please unplug the charging code. ").arg(cap));
-            m_lastHighNotify = now;
+        QString battery_high = QString("Remaining amout %1% - Please unplug the charging code").arg(cap);
+        showSystemNotification(m_tray, "Battery high", battery_high);
+
+        Toast *t = new Toast(battery_high);
+        t->showAtTopCenter();
+
+        int res = showBlockingDialog(nullptr, "Battery high", "Would you like to finish it? ");
+        if(res == 1){
+            //snooze
         }
     }
 }

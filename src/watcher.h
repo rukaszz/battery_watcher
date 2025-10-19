@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WATCHER_H
+#define WATCHER_H
 #include <QObject>
 #include <QSystemTrayIcon>
 #include <QTimer>
@@ -6,6 +7,7 @@
 class BatteryWatcher : public QObject{
     Q_OBJECT
 public:
+    // 暗黙のコンストラクタの呼び出しの禁止
     explicit BatteryWatcher(QSystemTrayIcon *tray, QObject *parent = nullptr);
     void checkOnce();
 
@@ -25,3 +27,4 @@ private:
     void notify(const QString &title, const QString &body);
 };
 
+#endif // WATCHER_H

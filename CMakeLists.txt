@@ -18,14 +18,14 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
 
 # Qt の自動処理を有効にする
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 # 実行ファイルの定義と列挙
 add_executable(battery_watcher
     src/main.cpp
-    src/watcher.cpp
-    src/watcher.h
+    src/watcher.h src/watcher.cpp
+    src/toast.h src/toast.cpp
+    src/notifyutil.h src/notifyutil.cpp
+    src/config.h src/config.cpp
 )
 
 # リンクするライブラリを指定(Widgetsを指定するだけでも良いらしい)
