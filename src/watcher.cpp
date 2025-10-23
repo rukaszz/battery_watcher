@@ -1,13 +1,16 @@
 #include "watcher.h"
 #include "toast.h"
 #include "notifyutil.h"
+#include "config.h"
 #include <QFile>
 #include <QString>
 #include <QDateTime>
 #include <QTextStream>
 #include <QSystemTrayIcon>
 
-BatteryWatcher::BatteryWatcher(QSystemTrayIcon *tray, QObject *parent) : QObject(parent), m_tray(tray){
+BatteryWatcher::BatteryWatcher(QSystemTrayIcon *tray, Config *cfg, QObject *parent)
+    : QObject(parent), m_tray(tray), m_cfg(cfg){
+    connect(m_cfg, &Config::changed, this, &BatteryWatcher::onConfigChanged);
     m_timer.setInterval(60 * 1000); // 60秒ごと
     connect(&m_timer, &QTimer::timeout, this, &BatteryWatcher::onTimeout);
     m_timer.start();
@@ -17,6 +20,10 @@ BatteryWatcher::BatteryWatcher(QSystemTrayIcon *tray, QObject *parent) : QObject
 
 void BatteryWatcher::onTimeout(){
     checkOnce();
+}
+
+void BatteryWatcher::onConfigChanged(){
+    m_timer.setInterval(m_cfg->checkIntervalSeconds() * 1000); // 10分ごと
 }
 
 int BatteryWatcher::readCapacity() const {
@@ -46,7 +53,7 @@ void BatteryWatcher::checkOnce(){
     QString status = readStatus();
     qint64 now = QDateTime::currentMSecsSinceEpoch();
 
-    if(cap <= m_lowThreshold && status != "Charging"){
+    if(cap <= m_cfg->lowThreshold() && status != "Charging"){
         QString battery_low = QString("Remaining amout %1% - Please insert the charging code").arg(cap);
         showSystemNotification(m_tray, "Battery low", battery_low);
 
@@ -58,7 +65,7 @@ void BatteryWatcher::checkOnce(){
             //snooze
         }
     }
-    if(cap >= m_highThreshold && status == "Charging"){
+    if(cap >= m_cfg->highThreshold() && status == "Charging"){
         QString battery_high = QString("Remaining amout %1% - Please unplug the charging code").arg(cap);
         showSystemNotification(m_tray, "Battery high", battery_high);
 

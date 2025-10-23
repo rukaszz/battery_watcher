@@ -26,7 +26,11 @@ int main(int argc, char **argv){
     tray.setContextMenu(&menu);
     tray.show();
 
-    BatteryWatcher watcher(&tray);
+    Config config;
+    // default path: ~/.config/battery-watcher/config.json
+    config.load("~/battery_watcher/config.json");
+
+    BatteryWatcher watcher(&tray, &config);
 
     return app.exec();
 }

@@ -20,6 +20,7 @@ public:
     int lowThreshold() const;
     int highThreshold() const;
     int checkIntervalSeconds() const;
+    int notifyCooldownSeconds() const;
     int toastDurationMs() const;
     int snoozeMinutes() const;
     QString msgLow() const;
@@ -46,6 +47,7 @@ private:
     int m_lowThreshold;
     int m_highThreshold;
     int m_checkIntervalSeconds;
+    int m_notifyCooldownSeconds;
     int m_toastDurationMs;
     int m_snoozeMinutes;
     QString m_msgLow, m_msgHigh, m_msgDialog;
