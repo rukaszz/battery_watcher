@@ -133,3 +133,15 @@ QString Config::msgHigh() const {return m_msgHigh;}
 QString Config::msgDialog() const {return m_msgDialog;}
 bool Config::loggingEnable() const {return m_loggingEnabled;}
 QString Config::loggingPath() const {return m_loggingPath;}
+
+// setters
+void Config::setLowThreshold(int v) {m_lowThreshold = v;}
+void Config::setHighThreshold(int v) {m_highThreshold = v;}
+void Config::setCheckIntervalSeconds(int v) {m_checkIntervalSeconds = v;}
+void Config::setNotifyCooldownSeconds(int v) {m_notifyCooldownSeconds = v;}
+void Config::setToastDurationMs(int v) {m_toastDurationMs = v;}
+void Config::setSnoozeMinutes(int v) {m_snoozeMinutes = v;}
+void Config::setMsgLow(const QString &s) {m_msgLow = s;}
+void Config::setMsgHigh(const QString &s) {m_msgHigh = s;}
+void Config::setMsgDialog(const QString &s) {m_msgDialog = s;}
+void Config::setLoggingPath(const QString &p) {m_loggingPath = p;};

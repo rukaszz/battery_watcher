@@ -12,6 +12,7 @@ public:
     bool load(const QString &path);
     // 書き込む
     bool save(const QString &path) const;
+
     QString path() const{
         return m_path;
     }
@@ -28,6 +29,18 @@ public:
     QString msgDialog() const;
     bool loggingEnable() const;
     QString loggingPath() const;
+
+    // setters
+    void setLowThreshold(int v);
+    void setHighThreshold(int v);
+    void setCheckIntervalSeconds(int v);
+    void setNotifyCooldownSeconds(int v);
+    void setToastDurationMs(int v);
+    void setSnoozeMinutes(int v);
+    void setMsgLow(const QString &s);
+    void setMsgHigh(const QString &s);
+    void setMsgDialog(const QString &s);
+    void setLoggingPath(const QString &p);
 
 // Qtオブジェクトを継承したクラスが発行するイベント
 signals:

@@ -26,6 +26,7 @@ add_executable(battery_watcher
     src/toast.h src/toast.cpp
     src/notifyutil.h src/notifyutil.cpp
     src/config.h src/config.cpp
+    src/settingsdialog.h src/settingsdialog.cpp
 )
 
 # リンクするライブラリを指定(Widgetsを指定するだけでも良いらしい)
